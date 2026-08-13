@@ -32,16 +32,8 @@ Problem
 
 🚧 Early development — Arc Testnet
 
-## Development
+## V1
 
-The project is initially being developed on an Android device and will use GitHub for source control and Vercel for appropriate web/API deployment components.
+The first implementation is testnet-only.
 
-## Important
-
-The initial implementation is testnet-only.
-
-Proof2Impact is not a bank, investment product, money transmitter, charity, or financial service merely by virtue of this repository. Production deployment will require appropriate legal, compliance, security, privacy, and smart-contract review.
-
-## License
-
-To be determined before public production release.
+Production deployment will require appropriate legal, compliance, privacy, security, infrastructure and smart-contract review.

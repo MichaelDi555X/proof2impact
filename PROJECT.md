@@ -2,7 +2,7 @@
 
 ## Mission
 
-Proof2Impact is an Arc-native, USDC-based impact platform designed to connect real-world problems with measurable, verifiable outcomes.
+Proof2Impact is a mobile-first impact platform designed to connect real-world problems with measurable, verifiable outcomes.
 
 ## Core flow
 
@@ -33,7 +33,7 @@ Build the smallest verifiable end-to-end system first.
 
 ## Security principle
 
-Never place production secrets, private keys, seed phrases, Entity Secrets, API secrets, or personal data in the Android application or Git repository.
+Never place production secrets, private keys, seed phrases, API secrets, or personal data in the Android application or Git repository.
 
 ## V1 scope
 
