@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Android
+.gradle/
+.idea/
+build/
+*/build/
+local.properties
+*.iml
+
+# APK/AAB
+*.apk
+*.aab
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Blockchain
+broadcast/
+cache/
+out/
+artifacts/
+
+# Logs
+*.log
