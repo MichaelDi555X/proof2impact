@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -33,13 +34,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import java.io.ByteArrayOutputStream
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private val evidenceStore by lazy { EvidenceStore(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +112,9 @@ class MainActivity : ComponentActivity() {
                                 if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) photoCapture.launch(null)
                                 else cameraPermission.launch(Manifest.permission.CAMERA)
                             }) { Text("Photo") }
-                            OutlinedButton(onClick = { photoPicker.launch(ActivityResultContracts.PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)) }) { Text("Library") }
+                            OutlinedButton(onClick = {
+                                photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+                            }) { Text("Library") }
                         }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedButton(onClick = {
