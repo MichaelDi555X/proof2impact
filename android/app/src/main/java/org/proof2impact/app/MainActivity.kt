@@ -140,7 +140,7 @@ class MainActivity : ComponentActivity() {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text("Offline queue", style = MaterialTheme.typography.titleLarge)
                         Text("${records.size} local evidence item(s). Local files are retained until an authenticated sync implementation is enabled.")
-                        Button(onClick = { enqueueSync(); status = "Sync worker scheduled for network availability." }) { Text("Schedule sync") }
+                        Button(onClick = { enqueueSync(); status = "Sync boundary scheduled; no upload is performed until the authenticated API is enabled." }) { Text("Schedule sync") }
                     }
                 }
             }
@@ -151,8 +151,10 @@ class MainActivity : ComponentActivity() {
     private fun persistUri(uriString: String, records: MutableList<EvidenceRecord>, source: String) {
         val uri = android.net.Uri.parse(uriString)
         runCatching {
-            val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: error("Unable to read selected media")
-            evidenceStore.persist(bytes, contentResolver.getType(uri) ?: "application/octet-stream", source)
+            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
+            contentResolver.openInputStream(uri)?.use { input ->
+                evidenceStore.persist(input, mimeType, source)
+            } ?: error("Unable to read selected media")
         }.onSuccess { records.add(it); statusToast("Evidence stored locally. SHA-256: ${it.sha256.take(12)}…") }
             .onFailure { statusToast("Evidence could not be stored: ${it.message}") }
     }
