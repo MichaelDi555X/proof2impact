@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const base = assessImpact(input);
 
     // Optional AI enhancement. Deterministic domain logic remains the safe baseline.
-    if (process.env.AI_GATEWAY_API_KEY) {
+    if (process.env.AI_GATEWAY_API_KEY && process.env.AI_MODEL) {
       const response = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openai/gpt-5.6-sol",
+          model: process.env.AI_MODEL,
           messages: [
             {
               role: "system",
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
               content: JSON.stringify({ ...input, baseline: base }),
             },
           ],
-          max_tokens: 500,
+          max_tokens: Number(process.env.AI_MAX_TOKENS ?? "500"),
         }),
       });
 
