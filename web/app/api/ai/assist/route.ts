@@ -51,56 +51,60 @@ export async function POST(request: Request) {
       const timeout = setTimeout(() => controller.abort(), 8_000);
 
       try {
-        const response = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.AI_GATEWAY_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: process.env.AI_MODEL,
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are Proof2Impact's evidence-readiness assistant. Never claim that a document is authentic, an organisation is legally verified, or funding is guaranteed. Return concise JSON with summary, gaps array, and nextSteps array. Treat the deterministic baseline as authoritative for readiness calculation.",
-              },
-              {
-                role: "user",
-                content: JSON.stringify({ ...input, baseline: base }),
-              },
-            ],
-            max_tokens: maxTokens,
-          }),
-          signal: controller.signal,
-        });
+        try {
+          const response = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.AI_GATEWAY_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: process.env.AI_MODEL,
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "You are Proof2Impact's evidence-readiness assistant. Never claim that a document is authentic, an organisation is legally verified, or funding is guaranteed. Return concise JSON with summary, gaps array, and nextSteps array. Treat the deterministic baseline as authoritative for readiness calculation.",
+                },
+                {
+                  role: "user",
+                  content: JSON.stringify({ ...input, baseline: base }),
+                },
+              ],
+              max_tokens: maxTokens,
+            }),
+            signal: controller.signal,
+          });
 
-        if (response.ok) {
-          const ai: unknown = await response.json();
-          const text =
-            ai && typeof ai === "object" && !Array.isArray(ai)
-              ? (ai as { choices?: Array<{ message?: { content?: unknown } }> }).choices?.[0]?.message?.content
-              : undefined;
-          if (typeof text === "string") {
-            try {
-              const parsed: unknown = JSON.parse(text);
-              if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-                const result = parsed as Record<string, unknown>;
-                return NextResponse.json({
-                  ...base,
-                  summary: typeof result.summary === "string" ? result.summary.slice(0, 1000) : base.summary,
-                  gaps: Array.isArray(result.gaps)
-                    ? result.gaps.filter((value): value is string => typeof value === "string").slice(0, 10)
-                    : base.gaps,
-                  nextSteps: Array.isArray(result.nextSteps)
-                    ? result.nextSteps.filter((value): value is string => typeof value === "string").slice(0, 10)
-                    : base.nextSteps,
-                });
+          if (response.ok) {
+            const ai: unknown = await response.json();
+            const text =
+              ai && typeof ai === "object" && !Array.isArray(ai)
+                ? (ai as { choices?: Array<{ message?: { content?: unknown } }> }).choices?.[0]?.message?.content
+                : undefined;
+            if (typeof text === "string") {
+              try {
+                const parsed: unknown = JSON.parse(text);
+                if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+                  const result = parsed as Record<string, unknown>;
+                  return NextResponse.json({
+                    ...base,
+                    summary: typeof result.summary === "string" ? result.summary.slice(0, 1000) : base.summary,
+                    gaps: Array.isArray(result.gaps)
+                      ? result.gaps.filter((value): value is string => typeof value === "string").slice(0, 10)
+                      : base.gaps,
+                    nextSteps: Array.isArray(result.nextSteps)
+                      ? result.nextSteps.filter((value): value is string => typeof value === "string").slice(0, 10)
+                      : base.nextSteps,
+                  });
+                }
+              } catch {
+                // Safely use the deterministic baseline when the model does not return valid JSON.
               }
-            } catch {
-              // Safely use the deterministic baseline when the model does not return valid JSON.
             }
           }
+        } catch {
+          // External AI failure, timeout or malformed response must never break the deterministic assessment.
         }
       } finally {
         clearTimeout(timeout);
