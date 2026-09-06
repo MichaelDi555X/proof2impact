@@ -9,13 +9,12 @@ on:
     branches:
       - main
       - 'feat/**'
+    tags:
+      - 'v*.*.*'
     paths:
       - 'android/**'
       - '.github/workflows/android-pilot.yml'
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
 
 permissions:
   contents: read
