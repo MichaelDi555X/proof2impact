@@ -2,7 +2,7 @@
 
 ## Standards
 
-Proof2Impact uses OWASP MASVS/MAS testing guidance for the Android surface, OWASP ASVS for web/API controls, and NIST SSDF for secure development lifecycle evidence. NIST SP 800-218 SSDF 1.1 is final; NIST lists SP 800-218 Rev. 1 / SSDF 1.2 as a draft released in December 2025, so the project should track the draft without treating it as the final baseline. citeturn0search13turn0search0turn0search10
+Proof2Impact uses OWASP MASVS/MAS testing guidance for the Android surface, OWASP ASVS for web/API controls, and NIST SSDF for secure development lifecycle evidence. NIST SP 800-218 SSDF 1.1 is final; NIST lists SP 800-218 Rev. 1 / SSDF 1.2 as a draft released in December 2025, so the project should track the draft without treating it as the final baseline.
 
 ## Authentication
 
