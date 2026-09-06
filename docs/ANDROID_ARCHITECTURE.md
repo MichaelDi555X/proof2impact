@@ -11,8 +11,8 @@ The Android pilot is an offline-first field evidence client for the Proof2Impact
 - **ViewModel:** owns screen state, user actions and lifecycle-aware flows.
 - **Domain:** use cases and business rules; no Android UI dependencies.
 - **Data:** repositories coordinate local persistence and remote APIs.
-- **Local:** app-private evidence files plus DataStore for small preferences. Room becomes the canonical queue when structured offline entities are introduced; Android guidance recommends Room for large/complex datasets and referential integrity. citeturn0search5
-- **Sync:** WorkManager for deferrable authenticated synchronization, with constraints, retry and backoff. citeturn0search2turn0search8
+- **Local:** app-private evidence files plus DataStore for small preferences. Room becomes the canonical queue when structured offline entities are introduced because it supports larger structured datasets and referential integrity.
+- **Sync:** WorkManager for deferrable authenticated synchronization, with constraints, retry and backoff.
 
 ## Package target
 
