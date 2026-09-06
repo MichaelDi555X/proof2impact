@@ -53,7 +53,7 @@ class EvidenceStore(private val context: Context) {
                 capturedAt = Instant.now().toString(),
                 sizeBytes = size,
             )
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             temporary.delete()
             target.delete()
             throw error
