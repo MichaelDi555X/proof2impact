@@ -10,10 +10,17 @@ class EvidenceStoreTest {
     }
 
     @Test
-    fun sha256IsDeterministicForKnownPayload() {
-        val digest = "proof2impact".toByteArray().let {
-            java.security.MessageDigest.getInstance("SHA-256").digest(it).joinToString("") { b -> "%02x".format(b) }
-        }
-        assertEquals("fa4ee5957f9359be5bb8e9b589a758b51f195797296c7c7b56159fca32b46d2b", digest)
+    fun sha256UsesProductionImplementation() {
+        val payload = "proof2impact".toByteArray()
+        assertEquals(
+            "fa4ee5957f9359be5bb8e9b589a758b51f195797296c7c7b56159fca32b46d2b",
+            EvidenceStore.sha256(payload),
+        )
+    }
+
+    @Test
+    fun evidenceMetadataLimitsAreStable() {
+        assertEquals(127, EvidenceStore.MAX_MIME_TYPE_LENGTH)
+        assertEquals(64, EvidenceStore.MAX_SOURCE_LENGTH)
     }
 }
