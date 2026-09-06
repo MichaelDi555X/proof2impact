@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - 'feat/**'
 
 permissions:
   contents: read
@@ -43,3 +44,16 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Smoke test production server
+        run: |
+          npm start > /tmp/proof2impact-next.log 2>&1 &
+          pid=$!
+          trap 'kill $pid || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/api/health > /tmp/health.json; then break; fi
+            sleep 1
+          done
+          test -s /tmp/health.json
+          grep -q '"status":"ok"' /tmp/health.json
+          cat /tmp/health.json
