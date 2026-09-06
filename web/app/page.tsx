@@ -46,7 +46,7 @@ export default function Home() {
       <header className="border-b border-white/10 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <div><p className="text-lg font-bold">Proof2Impact</p><p className="text-xs text-slate-400">Evidence → verification → impact connections</p></div>
-          <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">Production</span>
+          <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-xs text-amber-300">Pilot</span>
         </div>
       </header>
 
