@@ -1,0 +1,14 @@
+changelog:
+  categories:
+    - title: Android
+      labels:
+        - android
+    - title: Web
+      labels:
+        - web
+    - title: Security
+      labels:
+        - security
+    - title: Other
+      labels:
+        - "*"
